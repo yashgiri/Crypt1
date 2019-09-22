@@ -68,12 +68,12 @@ std::vector<unsigned int> decryption(std::vector<unsigned int> input, unsigned i
 
 // Use key : feeffa
 
-int main()
+int main(int argc, char **argv)
 {
     std::vector<unsigned int> input;
     unsigned int key;
-    cout<<"Enter decryption key : ";
-    cin>>hex>>key;
+    key = stoi(argv[1], 0, 16);
+    cout<<"The key in hex is : "<<key;
     input = {2155831779,8333129,2155837437,60171727};
     decryption(input, key);
     return 0;
