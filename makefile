@@ -1,3 +1,6 @@
+input = input.PNG
+output = decryption.PNG
+
 ALL: ENCRYPT DECRYPT
 
 DECRYPT: IO decrypt.o IO
@@ -15,6 +18,6 @@ CLEAN:
 	make ALL
 	
 TEST: CLEAN
-	./encrypt 0 input.txt encryption.txt
-	./decrypt 0 encryption.txt decryption.txt
-	diff input.txt decryption.txt
+	./encrypt 0 $(input) encryption.txt
+	./decrypt 0 encryption.txt $(output)
+	diff $(input) $(output)
