@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 	vector<unsigned int> data;
 
 	key = (unsigned int)strtol(keyString, NULL, 16); // reads the key as a hex string
-	cout << "The key in hex is : " << key;
+	cout << "The key in hex is : " << key << endl;
 	input = getInput(inFileString);
 	data = encryption(input, key);
 	pushOutput(data, outFileString);
