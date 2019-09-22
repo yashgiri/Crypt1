@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <vector>
 #include <bitset>
+#include "fileInteraction.cpp"
 #define INT_BITS 32
 using namespace std;
 
@@ -70,12 +71,29 @@ std::vector<unsigned int> decryption(std::vector<unsigned int> input, unsigned i
 
 int main(int argc, char **argv)
 {
-    std::vector<unsigned int> input;
-    unsigned int key;
-    key = stoi(argv[1], 0, 16);
+
+	if (argc < 4)
+	{
+		cout << "ERROR: Not enough parameters (need at least 3)" << endl;
+		exit(1); // terminate with error
+	}
+
+	// initialize values, assign key values
+	unsigned int key;
+
+	char* keyString = argv[1];
+	char* inFileString = argv[2];
+	char* outFileString = argv[3];
+
+	std::vector<unsigned int> input;
+	vector<unsigned int> data;
+    
+	key = (unsigned int)strtol(keyString, NULL, 16); // reads the key as a hex string
     cout<<"The key in hex is : "<<key;
-    input = {2155831779,8333129,2155837437,60171727};
-    decryption(input, key);
+    input = getInput(inFileString);
+	data = decryption(input, key);
+	pushOutput(data, outFileString);
+
     return 0;
 }
 

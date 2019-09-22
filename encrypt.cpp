@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <vector>
 #include <bitset>
+#include "fileInteraction.cpp"
 using namespace std;
 
 unsigned int rotater(unsigned  int input)
@@ -56,12 +57,29 @@ std::vector<unsigned int> encryption(std::vector<unsigned int> input, unsigned i
 	return input_stg3;
 }
 
-int main()
+int main(int argc, char** argv)
 {
-	std::vector<unsigned int> input;
+	if (argc < 4)
+	{
+		cout << "ERROR: Not enough parameters (need at least 3)" << endl;
+		exit(1); // terminate with error
+	}
+
+	// initialize values, assign key values
 	unsigned int key;
-	cin>>hex>>key;
-	input = {11324,41323,0,131245159};
-	encryption(input, key);
+
+	char* keyString = argv[1];
+	char* inFileString = argv[2];
+	char* outFileString = argv[3];
+
+	std::vector<unsigned int> input;
+	vector<unsigned int> data;
+
+	key = (unsigned int)strtol(keyString, NULL, 16); // reads the key as a hex string
+	cout << "The key in hex is : " << key;
+	input = getInput(inFileString);
+	data = encryption(input, key);
+	pushOutput(data, outFileString);
+
 	return 0;
 }
