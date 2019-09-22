@@ -6,8 +6,11 @@
 #include <iomanip>
 #include <fstream>
 #include <iostream>
+#include <bitset>
 #include "fileInteraction.h"
 using namespace std;
+
+bool debug = false;
 
 // retrieves the input data to a given vector
 vector<dataPacket> getInput(char* inFileString)
@@ -39,9 +42,13 @@ vector<dataPacket> getInput(char* inFileString)
 		dataPacket chunk = 0;
 		for (int j = 0; j < 4; ++j)
 		{
+			if (debug)
+				cout << "Reading: " << buffer[j] << " or " << (unsigned int)buffer[j] << " or " << bitset<8>((unsigned int)buffer[j]) << endl;
 			chunk = chunk << 8;
-			chunk += (dataPacket)buffer[j];
+			chunk += (buffer[j] & 255);
 		}
+		if (debug)
+			cout << "Read \"" << chunk << "\" or \"" << bitset<32>(chunk) << "\" or \"" << buffer[0] << buffer[1] << buffer[2] << buffer[3] << "\" or \"" << bitset<8>(buffer[0]) << bitset<8>(buffer[1]) << bitset<8>(buffer[2]) << bitset<8>(buffer[3]) << "\" from file" << endl;
 		data.push_back(chunk);
 	}
 
@@ -59,9 +66,11 @@ vector<dataPacket> getInput(char* inFileString)
 			finalChunk = finalChunk << 8;
 			if (i < extraChars)
 			{
-				finalChunk += (dataPacket)buffer[i];
+				finalChunk += buffer[i] & 255;
 			}
 		}
+		if (debug)
+			cout << "Reading \"" << finalChunk << "\" from file" << endl;
 		data.push_back(finalChunk);
 	}
 
@@ -83,21 +92,28 @@ void pushOutput(vector<dataPacket>& data, char* outFileString)
 		exit(1); // terminate with error
 	}
 
-	char buffer;
+	unsigned int buffer;
 
 	// writes to the file, iterating over all data
 	for (auto iter = data.begin(); iter != data.end(); ++iter)
 	{
 		dataPacket chunk = *iter;
+
+		if (debug)
+			cout << "Writing chunk with value: " << chunk << " Or: " << bitset<32>(chunk) << ", Or:" << endl;
 		for (int j = 0; j < 4; ++j)
 		{
-			buffer = chunk;
-			chunk = chunk >> 8;
+			buffer = ((chunk & 4278190080) >> 24);
+			chunk = chunk << 8;
 
 			// if this isn't a pad byte
 			if (iter + 1 != data.end() || buffer != 0)
 			{
-				outFile << buffer;
+				if (debug)
+					cout << "Writing \"" << (char)buffer << "\" (or \"" << (unsigned int)buffer << "\", or \""
+					<< bitset<8>(buffer)
+					<<"\") to file" << endl;
+				outFile << (char) buffer;
 			}
 		}
 	}
