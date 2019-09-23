@@ -92,16 +92,7 @@ int main(int argc, char **argv)
 	input = getInput(inFileString);
 	data = decryption(input, key);
 	pushOutput(data, outFileString);
-	/*
-	vector<unsigned int> testVector1 = { 1, 2147483649, 2, 1073741825, 3814150314, 2572983187, 641186099 };
-	vector<unsigned int> testVector2 = decryption(testVector1, 0);
-	cout << "\nTEST Decryption: [";
-	for (int i = 0; i < testVector2.size(); ++i)
-	{
-		cout << testVector2[i] << ", ";
-	}
-	cout << "]" << endl;
-	*/
+
     return 0;
 }
 
