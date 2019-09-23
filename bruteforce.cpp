@@ -62,7 +62,11 @@ int main(int argc, char **argv)
     unsigned int key;
     char* keyString = argv[1];
     std::vector<unsigned int> input, encrypt_var, output;
-    input = {32842934};
+    for(int i=0; i<32; i++)
+    {
+        input.push_back(rand());
+    }
+    //input = {32842934, 32842934, 3284, 3123193489};
     key = (unsigned int)strtol(keyString, NULL, 16); // reads the key as a hex string
     cout<<"Key recieved for encryption : "<<key<<" with string : "<<keyString;
     encrypt_var = encryption(input, key);
@@ -72,7 +76,7 @@ int main(int argc, char **argv)
         cout<<"\nTrying key : "<<i;
         output = decryption(encrypt_var, i);
         cout<<"\tOutput [0] : "<<output[0]<<" should be "<<input[0];
-        if(output[0] == input[0])
+        if(output[1] == input[1])
         {
             cout<<"\n\nFound the key : "<<i<<" with hex value "<<std::hex<<i;
             break;
